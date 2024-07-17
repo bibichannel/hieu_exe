@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    branches: main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches: main 
+
+jobs:
+  Deploy:
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+
+      - name: Deploy to server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SOURCE: "./"
+          REMOTE_HOST: {{ secrets.REMOTE_HOST }}
+          REMOTE_USER: {{ secrets.REMOTE_USER }}
+          TARGET: {{ secrets.REMOTE_TARGET }}
+          SCRIPT_BEFORE: |
+            whoami
+            ls -la
+          SCRIPT_AFTER: |
+            whoami
+            ls  -la
