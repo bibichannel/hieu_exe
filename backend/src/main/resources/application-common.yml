@@ -1,0 +1,53 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true
+#    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    operationsSorter: method
+
+
+app:
+  api:
+    version:
+      v1: /api/v1
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${GOOGLE_USERNAME}
+    password: ${GOOGLE_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  openapi:
+    server: ${HOST}:${PORT}
+  auth:
+    tokenSecret: ${SECRECT}
+    refreshTokenExpirationMsec: ${EXPIRED_10_DAYS}
+    accessTokenExpirationMsec: ${EXPIRED_10_DAYS}
+  cors:
+    allowedOrigins: ${CORS}
+  oauth2:
+    # After successfully authenticating with the OAuth2 Provider,
+    # we'll be generating an auth token for the user and sending the token to the
+    # redirectUri mentioned by the client in the /oauth2/authorize request.
+    # We're not using cookies because they won't work well in mobile clients.
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - myandroidapp://oauth2/redirect
+      - myiosapp://oauth2/redirect

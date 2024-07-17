@@ -1,0 +1,14 @@
+spring:
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:sql/data.sql, classpath:sql/user.sql, classpath:sql/payment.sql
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:hieudb}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:03102003@Phuc}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+ngrok:
+  enabled: true
+  authToken: 2ApRl0B2Tv5lMZ57mLhhxcwAN9X_6zwoinvhZAAX4sPNcbvbX

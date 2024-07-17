@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  nginx:
+      image: nginx:latest
+      restart: unless-stopped
+      tty: true
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/conf.d/my-app.conf
+        - ./nginx/logs:/var/log/nginx
+      ports:
+        - "80:80"
+      depends_on:
+        - backend
+        - frontend
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    tty: true
+    env_file: ./frontend/.env
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    tty: true
+    depends_on:
+      - db
+    env_file: ./backend/.env
+
+    volumes:
+      - /root/images:/app/uploads
+      - ./logs/be-swp391:/var/log
+  db:
+    image: mysql:latest
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: Root1234
+      MYSQL_DATABASE: hieudb
+    volumes:
+      - mysql-data:/var/lib/mysql
+      
+volumes:
+  mysql-data:

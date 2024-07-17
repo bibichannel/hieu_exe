@@ -1,0 +1,2139 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Backend API",
+    "description": "This API exposes endpoints to manage demo.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "security": [
+    {
+      "Bearer_Authentication": []
+    }
+  ],
+  "paths": {
+    "/api/v1/payment/{orderId}": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getOrderById",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "cancelOrder",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employers/status/{applicationId}": {
+      "put": {
+        "tags": [
+          "employer-controller"
+        ],
+        "operationId": "updateApplicationStatus",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employers/purchase/{packageId}": {
+      "put": {
+        "tags": [
+          "employer-controller"
+        ],
+        "operationId": "purchasePackage",
+        "parameters": [
+          {
+            "name": "packageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/ipn": {
+      "post": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "payosTransferHandler",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/create": {
+      "post": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "createPaymentLink",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/confirm-webhook": {
+      "post": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "confirmWebhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "tags": [
+          "job-controller"
+        ],
+        "operationId": "searchJobs",
+        "parameters": [
+          {
+            "name": "jobTitle",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minimumSalary",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "maximumSalary",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jobRole",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "JOB_TITLE",
+                "SALARY",
+                "CREATED_AT"
+              ]
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedResponseJobResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "job-controller"
+        ],
+        "operationId": "createJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/candidates/favorites": {
+      "get": {
+        "tags": [
+          "candidate-controller"
+        ],
+        "operationId": "getFavoriteJobs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "candidate-controller"
+        ],
+        "operationId": "addFavoriteJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/candidates/apply/{jobId}": {
+      "post": {
+        "tags": [
+          "candidate-controller"
+        ],
+        "operationId": "applyJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyJobRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signup": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signin": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "signin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/send-otp": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "generateOTP",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset-password": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "changePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/profile": {
+      "get": {
+        "tags": [
+          "profile-controller"
+        ],
+        "operationId": "getProfile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getAllPayments",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedResponsePaymentResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/weekly-revenue": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getWeeklyRevenue",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/today": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getTodayDashboard",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payment/monthly-revenue": {
+      "get": {
+        "tags": [
+          "payment-controller"
+        ],
+        "operationId": "getMonthlyRevenue",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/packages": {
+      "get": {
+        "tags": [
+          "package-controller"
+        ],
+        "operationId": "getAllPackages",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PackageEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/packages/{id}": {
+      "get": {
+        "tags": [
+          "package-controller"
+        ],
+        "operationId": "getPackageById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}": {
+      "get": {
+        "tags": [
+          "job-controller"
+        ],
+        "operationId": "getJobById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "job-controller"
+        ],
+        "operationId": "deleteJob",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/jobroles/popular": {
+      "get": {
+        "tags": [
+          "job-role-controller"
+        ],
+        "operationId": "getPopularJobRole",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedResponseJobRoleEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employers/jobs": {
+      "get": {
+        "tags": [
+          "employer-controller"
+        ],
+        "operationId": "getEmployerJobs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employers/applications": {
+      "get": {
+        "tags": [
+          "employer-controller"
+        ],
+        "operationId": "getEmployerJobsWithApplications",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobWithApplicationsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/popular": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "getPopularCategoriesWithJobCount",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndustryWithJobCountDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/candidates/jobs": {
+      "get": {
+        "tags": [
+          "candidate-controller"
+        ],
+        "operationId": "getAppliedJobs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/verify": {
+      "get": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "verify",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otp",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/candidates/favorites/remove": {
+      "delete": {
+        "tags": [
+          "candidate-controller"
+        ],
+        "operationId": "removeFavoriteJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PaymentRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "returnUrl": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cancelUrl": {
+            "type": "string"
+          },
+          "packages": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateJobRequest": {
+        "type": "object",
+        "properties": {
+          "jobTitle": {
+            "type": "string"
+          },
+          "jobDescription": {
+            "type": "string"
+          },
+          "requirementDescription": {
+            "type": "string"
+          },
+          "desirableDescription": {
+            "type": "string"
+          },
+          "benefitDescription": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jobBenefits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jobRoleId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jobTypesId": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "minimumSalary": {
+            "type": "number",
+            "format": "double"
+          },
+          "maximumSalary": {
+            "type": "number",
+            "format": "double"
+          },
+          "educationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "experience": {
+            "type": "string"
+          },
+          "vacancies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "jobLevelId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          }
+        }
+      },
+      "EmployerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
+      "JobResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "jobDescription": {
+            "type": "string"
+          },
+          "requirementDescription": {
+            "type": "string"
+          },
+          "desirableDescription": {
+            "type": "string"
+          },
+          "benefitDescription": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jobBenefits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jobRole": {
+            "type": "string"
+          },
+          "jobTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "minimumSalary": {
+            "type": "number",
+            "format": "double"
+          },
+          "maximumSalary": {
+            "type": "number",
+            "format": "double"
+          },
+          "education": {
+            "type": "string"
+          },
+          "experience": {
+            "type": "string"
+          },
+          "vacancies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "jobLevel": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "logoPath": {
+            "type": "string"
+          },
+          "employer": {
+            "$ref": "#/components/schemas/EmployerDto"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ApplyJobRequest": {
+        "type": "object",
+        "properties": {
+          "cvFile": {
+            "type": "string",
+            "format": "binary"
+          },
+          "cvId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SignUpRequest": {
+        "required": [
+          "confirmPassword",
+          "email",
+          "firstName",
+          "lastName",
+          "password",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 6,
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "EMPLOYER",
+              "CANDIDATE"
+            ]
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
+      "ChangePasswordRequest": {
+        "required": [
+          "confirmPassword",
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 6,
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SocialLinkDto": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "EMPLOYER",
+              "CANDIDATE"
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "isSetup": {
+            "type": "boolean"
+          },
+          "socialProvider": {
+            "type": "string",
+            "enum": [
+              "DATABASE",
+              "FACEBOOK",
+              "GOOGLE"
+            ]
+          },
+          "providerId": {
+            "type": "string"
+          },
+          "socialLinks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocialLinkDto"
+            }
+          },
+          "purchasedPackages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ApplicationEntity": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "job": {
+            "$ref": "#/components/schemas/JobEntity"
+          },
+          "freelancer": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "cvUrl": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED"
+            ]
+          }
+        }
+      },
+      "CVEntity": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cvUrl": {
+            "type": "string"
+          },
+          "freelancer": {
+            "$ref": "#/components/schemas/UserEntity"
+          }
+        }
+      },
+      "EducationEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "level": {
+            "type": "string"
+          }
+        }
+      },
+      "IndustryEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "JobEntity": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "jobDescription": {
+            "type": "string"
+          },
+          "requirementDescription": {
+            "type": "string"
+          },
+          "desirableDescription": {
+            "type": "string"
+          },
+          "benefitDescription": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jobBenefits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jobRole": {
+            "$ref": "#/components/schemas/JobRoleEntity"
+          },
+          "jobTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobTypeEntity"
+            }
+          },
+          "minimumSalary": {
+            "type": "number",
+            "format": "double"
+          },
+          "maximumSalary": {
+            "type": "number",
+            "format": "double"
+          },
+          "education": {
+            "$ref": "#/components/schemas/EducationEntity"
+          },
+          "experience": {
+            "type": "string"
+          },
+          "vacancies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "jobLevel": {
+            "$ref": "#/components/schemas/JobLevelEntity"
+          },
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "logoPath": {
+            "type": "string"
+          },
+          "employer": {
+            "$ref": "#/components/schemas/UserEntity"
+          },
+          "applications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationEntity"
+            }
+          },
+          "favoritedByUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserEntity"
+            }
+          }
+        }
+      },
+      "JobLevelEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "level": {
+            "type": "string"
+          }
+        }
+      },
+      "JobRoleEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "industry": {
+            "$ref": "#/components/schemas/IndustryEntity"
+          },
+          "jobLevels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobLevelEntity"
+            }
+          }
+        }
+      },
+      "JobTypeEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobEntity"
+            }
+          }
+        }
+      },
+      "SocialLinkEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserEntity"
+          }
+        }
+      },
+      "UserEntity": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "EMPLOYER",
+              "CANDIDATE"
+            ]
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "isSetup": {
+            "type": "boolean"
+          },
+          "canPost": {
+            "type": "boolean"
+          },
+          "socialProvider": {
+            "type": "string",
+            "enum": [
+              "DATABASE",
+              "FACEBOOK",
+              "GOOGLE"
+            ]
+          },
+          "providerId": {
+            "type": "string"
+          },
+          "socialLinks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocialLinkEntity"
+            }
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobEntity"
+            }
+          },
+          "favoriteJobs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobEntity"
+            }
+          },
+          "applications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationEntity"
+            }
+          },
+          "cvs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CVEntity"
+            }
+          },
+          "purchasedPackages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PagedResponsePaymentResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PaymentResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "packages": {
+            "type": "string"
+          },
+          "expiredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string"
+          },
+          "paymentLinkId": {
+            "type": "string"
+          },
+          "bin": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string"
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reference": {
+            "type": "string"
+          },
+          "orderCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "checkoutUrl": {
+            "type": "string"
+          },
+          "qrCode": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fullName": {
+            "type": "string"
+          }
+        }
+      },
+      "PackageEntity": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "durationInDays": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PagedResponseJobResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobResponse"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PagedResponseJobRoleEntity": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobRoleEntity"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ApplicationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jobId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "freelancerName": {
+            "type": "string"
+          },
+          "cvUrl": {
+            "type": "string"
+          },
+          "dateApplied": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED"
+            ]
+          }
+        }
+      },
+      "JobWithApplicationsResponse": {
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "jobTitle": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "applications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApplicationResponse"
+            }
+          }
+        }
+      },
+      "IndustryWithJobCountDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "jobCount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer_Authentication": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

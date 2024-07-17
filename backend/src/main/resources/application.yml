@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: "local"
+    group:
+      local: common, security, payment, local
+      prod: common, security, payment, prod
+
