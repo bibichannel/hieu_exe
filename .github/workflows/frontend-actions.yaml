@@ -25,4 +25,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            ./frontend.sh
+            cd /home/ec2-user/hieu_exe
+            ls -la
+            git pull
+            docker-compose build frontend && docker-compose up -d frontend
