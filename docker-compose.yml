@@ -14,9 +14,11 @@ services:
         - frontend
   frontend:
     build: ./frontend
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=4096
     restart: unless-stopped
     tty: true
-    env_file: ./frontend/.env
+    env_file: ./frontend/.env.prod
 
   backend:
     build: ./backend
@@ -24,7 +26,7 @@ services:
     tty: true
     depends_on:
       - db
-    env_file: ./backend/.env
+    env_file: ./backend/.env.prod
 
     volumes:
       - /root/images:/app/uploads

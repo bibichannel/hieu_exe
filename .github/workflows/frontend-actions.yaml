@@ -29,5 +29,4 @@ jobs:
             whoami
             ls -la
           SCRIPT_AFTER: |
-            whoami
-            ls  -la
+            docker-compose build frontend && docker-compose up -d frontend
