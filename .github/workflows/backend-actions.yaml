@@ -11,24 +11,21 @@ on:
 
 jobs:
   Deploy:
-    name: Deploy to server
+    name: Deploy Backend
     runs-on: ubuntu-latest
     
     steps:
       - name: Build & Deploy
         uses: actions/checkout@v2 
 
-      - name: Deploy to server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
-          SCRIPT_BEFORE: |
-            whoami
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/ec2-user/hieu_exe
             ls -la
-            echo "hello world"
-          SCRIPT_AFTER: |
-            whoami
-            ls  -la
+            git pull
+            docker-compose build backend && docker-compose up -d backend
