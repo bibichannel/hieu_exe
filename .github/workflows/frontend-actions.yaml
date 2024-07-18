@@ -27,6 +27,7 @@ jobs:
           script: |
             echo $(whoami) > info.txt
             echo $(pwd) >> info.txt
-            cd /home/ec2-user/hieu_exe
+            cd /home/ec2-user/hieu_exe 
             ls -la
+            git pull
             docker-compose build frontend && docker-compose up -d frontend
