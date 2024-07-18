@@ -11,7 +11,7 @@ on:
 
 jobs:
   Deploy:
-    name: Deploy to server
+    name: Deploy Frontend
     runs-on: ubuntu-latest
     
     steps:
@@ -25,8 +25,8 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            whoami
-            pwd
+            echo $(whoami) > info.txt
+            echo $(pwd) >> info.txt
             cd /home/ec2-user/hieu_exe
             ls -la
             docker-compose build frontend && docker-compose up -d frontend
